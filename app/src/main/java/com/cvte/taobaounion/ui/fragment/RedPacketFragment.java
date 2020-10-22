@@ -11,6 +11,6 @@ public class RedPacketFragment extends BaseFragment {
 
     @Override
     protected int getRootVireResId() {
-        return R.layout.fragment_select;
+        return R.layout.fragment_red_packet;
     }
 }

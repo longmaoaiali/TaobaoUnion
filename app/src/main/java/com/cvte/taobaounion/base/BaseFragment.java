@@ -21,7 +21,20 @@ public abstract class BaseFragment extends Fragment {
 
     protected  View loadTootView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         int resId = getRootVireResId();
-        return inflater.inflate(resId,container,false);
+        View rootView = inflater.inflate(resId,container,false);
+
+        initPresenter();
+        loadData();
+        return rootView;
+    }
+
+    protected void initPresenter() {
+
+    }
+
+    protected  void loadData(){
+        //subClass override
+        //并非所有子类都需要loadData 不需要定义抽象方法
     }
 
     protected abstract int getRootVireResId();

@@ -1,5 +1,7 @@
 package com.cvte.taobaounion.ui.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,6 +12,7 @@ import com.cvte.taobaounion.ui.fragment.HomeFragment;
 import com.cvte.taobaounion.ui.fragment.RedPacketFragment;
 import com.cvte.taobaounion.ui.fragment.SearchFragment;
 import com.cvte.taobaounion.ui.fragment.SelectFragment;
+import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,9 +35,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initPermission();
         initView();
         initFragments();
         initViewListener();
+    }
+
+    private void initPermission() {
+        int networkPermission = checkSelfPermission(Manifest.permission.INTERNET);
+
+        if(networkPermission != PackageManager.PERMISSION_GRANTED) {
+            //请求权限
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, Constant.PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode== Constant.PERMISSION_REQUEST_CODE) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                Log.d(TAG,"has permissions..");
+                //有权限
+            } else {
+                Log.d(TAG,"no permissionS...");
+                //没权限
+                finish();
+            }
+        }
     }
 
     private void initFragments() {

@@ -10,6 +10,7 @@ import com.cvte.taobaounion.R;
 
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -31,6 +32,16 @@ public abstract class BaseFragment extends Fragment {
         NONE,LOADING,SUCCESS,ERROR,EMPTY
     }
 
+    @OnClick(R.id.network_tips_text)
+    public void retry(){
+        /*点击网络错误重试*/
+        onRetryClick();
+    }
+
+
+    protected void onRetryClick() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return loadTootView(inflater,container,savedInstanceState);
@@ -38,7 +49,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected  View loadTootView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        View rootView = inflater.inflate(R.layout.base_fragment_layout,container,false);
+        View rootView = loadRootView(inflater,container);
         mBaseContainer = rootView.findViewById(R.id.base_container);
         loadStateView(inflater,container);
 
@@ -48,6 +59,10 @@ public abstract class BaseFragment extends Fragment {
         initPresenter();
         loadData();
         return rootView;
+    }
+
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return  inflater.inflate(R.layout.base_fragment_layout,container,false);
     }
 
     /**

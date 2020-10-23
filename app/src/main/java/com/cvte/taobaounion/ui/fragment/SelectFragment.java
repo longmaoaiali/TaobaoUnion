@@ -20,4 +20,9 @@ public class SelectFragment extends BaseFragment {
     protected int getRootVireResId() {
         return R.layout.fragment_select;
     }
+
+    @Override
+    protected void initView(View rootView) {
+        setUpState(State.SUCCESS);
+    }
 }

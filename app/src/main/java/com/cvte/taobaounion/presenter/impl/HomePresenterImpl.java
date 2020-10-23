@@ -49,9 +49,6 @@ public class HomePresenterImpl implements IHomePresenter {
                     }
                 } else {
                     LogUtils.d(TAG,response.code()+"");
-                    if (mCallback != null) {
-                        mCallback.onNetworkError();
-                    }
                 }
 
             }
@@ -59,6 +56,9 @@ public class HomePresenterImpl implements IHomePresenter {
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
                 LogUtils.d(TAG,"errormsg--> " + t);
+                if (mCallback != null) {
+                    mCallback.onNetworkError();
+                }
             }
         });
     }

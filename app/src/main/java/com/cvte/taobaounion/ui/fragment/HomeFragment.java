@@ -33,6 +33,11 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_home_fragment_layout,container,false);
+    }
+
+    @Override
     protected void initView(View rootView) {
         /*设置Layout 与 ViewPager */
         //设置ViewPager
@@ -41,6 +46,14 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager());
         //设置homePager的适配器
         mHomePager.setAdapter(mHomePagerAdapter);
+    }
+
+    @Override
+    protected void onRetryClick() {
+        //网络错误被点击
+        if (mHomePresenter != null) {
+            mHomePresenter.getCategories();
+        }
     }
 
     @Override

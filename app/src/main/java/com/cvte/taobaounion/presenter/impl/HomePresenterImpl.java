@@ -20,6 +20,7 @@ import retrofit2.Retrofit;
 
 public class HomePresenterImpl implements IHomePresenter {
     private static final String TAG = "HomePresenterImpl";
+    private IHomeCallback mCallback;
 
     @Override
     public void getCategories() {
@@ -36,6 +37,9 @@ public class HomePresenterImpl implements IHomePresenter {
                 if (code== HttpURLConnection.HTTP_OK) {
                     Categories categories = response.body();
                     LogUtils.d(TAG,categories.toString());
+                    if (mCallback != null) {
+                        mCallback.onCategoriesloaded(categories);
+                    }
                 } else {
                     LogUtils.d(TAG,response.code()+"");
 
@@ -52,11 +56,11 @@ public class HomePresenterImpl implements IHomePresenter {
 
     @Override
     public void registerCallback(IHomeCallback callback) {
-
+        this.mCallback = callback;
     }
 
     @Override
     public void unregisterCallback(IHomeCallback callback) {
-
+        this.mCallback = null;
     }
 }

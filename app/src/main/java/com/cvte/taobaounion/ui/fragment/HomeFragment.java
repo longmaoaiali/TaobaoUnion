@@ -9,9 +9,13 @@ import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.presenter.impl.HomePresenterImpl;
+import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.view.IHomeCallback;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import butterknife.BindView;
 
 /**
  * Created by user on 2020/10/21.
@@ -21,6 +25,23 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
 
     private HomePresenterImpl mHomePresenter;
+    @BindView(R.id.home_indicator)
+    public TabLayout mTabLayout;
+    @BindView(R.id.home_pager)
+    public ViewPager mHomePager;
+    private HomePagerAdapter mHomePagerAdapter;
+
+
+    @Override
+    protected void initView(View rootView) {
+        /*设置Layout 与 ViewPager */
+        //设置ViewPager
+        mTabLayout.setupWithViewPager(mHomePager);
+        //ViewPager设置适配器
+        mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager());
+        //设置homePager的适配器
+        mHomePager.setAdapter(mHomePagerAdapter);
+    }
 
     @Override
     protected int getRootVireResId() {
@@ -41,6 +62,9 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     public void onCategoriesloaded(Categories categories) {
         //加载的数据回调回来
+        if (mHomePagerAdapter != null) {
+            mHomePagerAdapter.setCategories(categories);
+        }
     }
 
 

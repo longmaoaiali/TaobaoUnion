@@ -9,4 +9,10 @@ import com.cvte.taobaounion.model.domain.Categories;
 public interface IHomeCallback {
 
     void onCategoriesloaded(Categories categories);
+
+    void onNetworkError();
+
+    void onLoading();
+
+    void onEmpty();
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.cvte.taobaounion.R;
 
@@ -18,6 +19,17 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     private Unbinder mBind;
+    private FrameLayout mBaseContainer;
+
+    private State currentState = State.NONE;
+    private View mSuccessView;
+    private View mLoadingView;
+    private View mErrorView;
+    private View mEmptyView;
+
+    public enum State {
+        NONE,LOADING,SUCCESS,ERROR,EMPTY
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,8 +37,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected  View loadTootView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        int resId = getRootVireResId();
-        View rootView = inflater.inflate(resId,container,false);
+
+        View rootView = inflater.inflate(R.layout.base_fragment_layout,container,false);
+        mBaseContainer = rootView.findViewById(R.id.base_container);
+        loadStateView(inflater,container);
+
 
         mBind = ButterKnife.bind(this,rootView);
         initView(rootView);
@@ -34,6 +49,58 @@ public abstract class BaseFragment extends Fragment {
         loadData();
         return rootView;
     }
+
+    /**
+     * 加载各种状态的VIew
+     * @param inflater
+     * @param container
+     */
+    private void loadStateView(LayoutInflater inflater, ViewGroup container) {
+        mSuccessView = loadSuccessView(inflater,container);
+        mBaseContainer.addView(mSuccessView);
+
+        //Loading View
+        mLoadingView = loadLoadingView(inflater,container);
+        mBaseContainer.addView(mLoadingView);
+
+        //ERROR View
+        mErrorView = loadErrorView(inflater,container);
+        mBaseContainer.addView(mErrorView);
+
+        //EMPTY View
+        mEmptyView = loadEmptyView(inflater,container);
+        mBaseContainer.addView(mEmptyView);
+
+        setUpState(State.NONE);
+    }
+
+    /*子类通过该方法切换页面状态*/
+    public void setUpState(State state){
+        this.currentState = state;
+        mSuccessView.setVisibility(currentState==State.SUCCESS? View.VISIBLE:View.GONE);
+        mLoadingView.setVisibility(currentState==State.LOADING? View.VISIBLE:View.GONE);
+        mErrorView.setVisibility(currentState==State.ERROR? View.VISIBLE:View.GONE);
+        mEmptyView.setVisibility(currentState==State.EMPTY? View.VISIBLE:View.GONE);
+    }
+
+    protected View loadEmptyView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_empty,container,false);
+    }
+
+    protected View loadErrorView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_error,container,false);
+    }
+
+    protected View loadLoadingView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_loading,container,false);
+    }
+
+
+    protected View loadSuccessView(LayoutInflater inflater,ViewGroup container){
+        int resId = getRootVireResId();
+        return inflater.inflate(resId,container,false);
+    }
+
 
     protected void initView(View rootView) {
     }

@@ -24,6 +24,9 @@ public class HomePresenterImpl implements IHomePresenter {
 
     @Override
     public void getCategories() {
+        if (mCallback != null) {
+            mCallback.onLoading();
+        }
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
         Call<Categories> task = api.getCategories();
@@ -38,11 +41,17 @@ public class HomePresenterImpl implements IHomePresenter {
                     Categories categories = response.body();
                     LogUtils.d(TAG,categories.toString());
                     if (mCallback != null) {
-                        mCallback.onCategoriesloaded(categories);
+                        if (categories==null||categories.getData().size()==0) {
+                            mCallback.onEmpty();
+                        }else{
+                            mCallback.onCategoriesloaded(categories);
+                        }
                     }
                 } else {
                     LogUtils.d(TAG,response.code()+"");
-
+                    if (mCallback != null) {
+                        mCallback.onNetworkError();
+                    }
                 }
 
             }

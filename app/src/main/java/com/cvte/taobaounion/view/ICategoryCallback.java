@@ -14,7 +14,7 @@ public interface ICategoryCallback {
      * 数据加载回调
      * @param contents
      */
-    void onContentLoaded(List<HomePagerContent.DataBean> contents);
+    void onContentLoaded(List<HomePagerContent.DataBean> contents,int categoryId);
 
     /**
      * 加载中
@@ -50,7 +50,7 @@ public interface ICategoryCallback {
      * 加载更多
      * @param contents
      */
-    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents);
+    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents,int categoryId);
 
     /**
      * 轮播图

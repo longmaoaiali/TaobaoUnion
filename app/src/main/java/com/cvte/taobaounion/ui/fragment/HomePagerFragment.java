@@ -25,6 +25,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     public static final String TAG = "HomePagerFragment";
     private ICategoryPagerPresenter mCategoryPagerPresenter;
+    private int mMaterialId;
 
     public static HomePagerFragment newInstance(Categories.DataBean category) {
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -50,12 +51,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     protected void loadData() {
         Bundle argument = getArguments();
         String title = argument.getString(Constant.KEY_HOME_PAGE_TITLE);
-        int materialId = argument.getInt(Constant.KEY_HOME_PAGE_MATERIAL_ID);
+        mMaterialId = argument.getInt(Constant.KEY_HOME_PAGE_MATERIAL_ID);
         //Todo:加载数据
         LogUtils.d(TAG,"title--> "+title);
-        LogUtils.d(TAG,"materialId--> "+materialId);
+        LogUtils.d(TAG,"materialId--> "+ mMaterialId);
         if (mCategoryPagerPresenter != null) {
-            mCategoryPagerPresenter.getContentByCategoryId(materialId);
+            mCategoryPagerPresenter.getContentByCategoryId(mMaterialId);
         }
     }
 
@@ -68,23 +69,36 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
 
     @Override
-    public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
-
+    public void onContentLoaded(List<HomePagerContent.DataBean> contents,int categoryId) {
+        if (mMaterialId != categoryId) {
+            return;
+        }
+        //todo:更新UI
+        setUpState(State.SUCCESS);
     }
 
     @Override
     public void onLoading(int categoryId) {
-
+        if (mMaterialId != categoryId) {
+            return;
+        }
+        setUpState(State.LOADING);
     }
 
     @Override
     public void onError(int categoryId) {
-
+        if (mMaterialId != categoryId) {
+            return;
+        }
+        setUpState(State.ERROR);
     }
 
     @Override
     public void onEmpty(int categoryId) {
-
+        if (mMaterialId != categoryId) {
+            return;
+        }
+        setUpState(State.EMPTY);
     }
 
     @Override
@@ -98,7 +112,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     }
 
     @Override
-    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
+    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents,int categoryId) {
 
     }
 

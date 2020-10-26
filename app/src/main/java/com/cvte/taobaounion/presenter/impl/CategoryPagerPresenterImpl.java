@@ -8,7 +8,9 @@ import com.cvte.taobaounion.utils.RetrofitManager;
 import com.cvte.taobaounion.utils.UrlUtils;
 import com.cvte.taobaounion.view.ICategoryCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -40,19 +42,25 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     private Map<Integer,Integer> pagesInfo = new HashMap<>();
     private static final int DEFAULT_PAGE = 1;
     private static final String TAG = "CategoryPagerPresenterImpl";
+    private List<ICategoryCallback> callbacks = new ArrayList<>();
 
     @Override
     public void registerViewCallback(ICategoryCallback callback) {
-
+        if (!callbacks.contains(callback)) {
+            callbacks.add(callback);
+        }
     }
 
     @Override
     public void unregisterViewCallback(ICategoryCallback callback) {
-
+        callbacks.remove(callback);
     }
 
     @Override
     public void getContentByCategoryId(int categoryId) {
+        for (ICategoryCallback callback : callbacks) {
+            callback.onLoading(categoryId);
+        }
         /*根据分类ID加载内容*/
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
@@ -72,8 +80,11 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
                 if (code==HTTP_OK) {
                     HomePagerContent pagerContent = response.body();
                     LogUtils.d(TAG,"pagerContent --> "+pagerContent);
+                    //数据回调给UI
+                    handleHomePagerContentResult(pagerContent,categoryId);
                 } else {
                     //TODO:
+                    handleHomeNetworkError(categoryId);
                 }
             }
 
@@ -82,6 +93,22 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
                 LogUtils.d(TAG,"onFailure--> "+t.toString());
             }
         });
+    }
+
+    private void handleHomeNetworkError(int categoryId) {
+        for (ICategoryCallback callback : callbacks) {
+            callback.onError(categoryId);
+        }
+    }
+
+    private void handleHomePagerContentResult(HomePagerContent pagerContent, int categoryId) {
+        for (ICategoryCallback callback : callbacks) {
+            if (pagerContent==null || pagerContent.getData().size()==0) {
+                callback.onEmpty(categoryId);
+            } else {
+                callback.onContentLoaded(pagerContent.getData(),categoryId);
+            }
+        }
     }
 
     @Override

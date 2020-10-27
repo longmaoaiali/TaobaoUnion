@@ -106,6 +106,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     }
 
     private void handleHomePagerContentResult(HomePagerContent pagerContent, int categoryId) {
+        List<HomePagerContent.DataBean> data = pagerContent.getData();
         for (ICategoryCallback callback : callbacks) {
             if (pagerContent==null || pagerContent.getData().size()==0) {
                 if (callback.getCategoryId()==categoryId) {
@@ -114,7 +115,9 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
 
             } else {
                 if (callback.getCategoryId()==categoryId) {
-                    callback.onContentLoaded(pagerContent.getData());
+                    List<HomePagerContent.DataBean> looperData = data.subList(data.size()-5,data.size());
+                    callback.onLooperListLoaded(looperData);
+                    callback.onContentLoaded(data);
                 }
             }
         }

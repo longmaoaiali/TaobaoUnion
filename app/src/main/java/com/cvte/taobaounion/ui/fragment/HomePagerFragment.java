@@ -12,6 +12,7 @@ import com.cvte.taobaounion.presenter.ICategoryPagerPresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
+import com.cvte.taobaounion.ui.adapter.LooperPagerAdapter;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.view.ICategoryCallback;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -35,7 +37,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @BindView(R.id.home_pager_content_list)
     public RecyclerView mContentList;
+
+    @BindView(R.id.looper_pager)
+    public ViewPager looperPage;
+
     private HomepageContentAdapter mHomepageContentAdapter;
+    private LooperPagerAdapter mLooperPagerAdapter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category) {
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -63,9 +70,11 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
             }
         });
         mHomepageContentAdapter = new HomepageContentAdapter();
-
-
         mContentList.setAdapter(mHomepageContentAdapter);
+
+        /*Viewpager创建轮播图适配器*/
+        mLooperPagerAdapter = new LooperPagerAdapter();
+        looperPage.setAdapter(mLooperPagerAdapter);
     }
 
     @Override
@@ -135,7 +144,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
-
+        LogUtils.d(TAG,"contents size-->"+contents.size());
+        mLooperPagerAdapter.setData(contents);
     }
 
     @Override

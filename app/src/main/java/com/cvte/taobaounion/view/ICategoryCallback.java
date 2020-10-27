@@ -14,43 +14,44 @@ public interface ICategoryCallback {
      * 数据加载回调
      * @param contents
      */
-    void onContentLoaded(List<HomePagerContent.DataBean> contents,int categoryId);
+    void onContentLoaded(List<HomePagerContent.DataBean> contents);
+
+    /**
+     * 得到CategoryId
+     * @return
+     */
+    int getCategoryId();
 
     /**
      * 加载中
-     * @param categoryId
      */
-    void onLoading(int categoryId);
+    void onLoading();
 
     /**
      * 加载错误
-     * @param categoryId
      */
-    void onError(int categoryId);
+    void onError();
 
     /**
      * 数据为空
-     * @param categoryId
      */
-    void onEmpty(int categoryId);
+    void onEmpty();
 
     /**
      * 加载更多网络错误
-     * @param categoryId
      */
-    void onLoadMoreError(int categoryId);
+    void onLoadMoreError();
 
     /**
      * 加载更多数据为空
-     * @param categoryId
      */
-    void onLoadMoreEmpty(int categoryId);
+    void onLoadMoreEmpty();
 
     /**
      * 加载更多
      * @param contents
      */
-    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents,int categoryId);
+    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents);
 
     /**
      * 轮播图

@@ -1,5 +1,6 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,12 +11,17 @@ import com.cvte.taobaounion.model.domain.HomePagerContent;
 import com.cvte.taobaounion.presenter.ICategoryPagerPresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
+import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.view.ICategoryCallback;
 
 import java.security.PublicKey;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 
 /**
  * Created by user on 2020/10/23.
@@ -26,6 +32,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     public static final String TAG = "HomePagerFragment";
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
+
+    @BindView(R.id.home_pager_content_list)
+    public RecyclerView mContentList;
+    private HomepageContentAdapter mHomepageContentAdapter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category) {
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -44,7 +54,18 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @Override
     protected void initView(View rootView) {
-        setUpState(State.SUCCESS);
+        mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.top = 8;
+                outRect.bottom = 8;
+            }
+        });
+        mHomepageContentAdapter = new HomepageContentAdapter();
+
+
+        mContentList.setAdapter(mHomepageContentAdapter);
     }
 
     @Override
@@ -69,50 +90,46 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
 
     @Override
-    public void onContentLoaded(List<HomePagerContent.DataBean> contents,int categoryId) {
-        if (mMaterialId != categoryId) {
-            return;
-        }
+    public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
         //todo:更新UI
+        mHomepageContentAdapter.setData(contents);
         setUpState(State.SUCCESS);
     }
 
     @Override
-    public void onLoading(int categoryId) {
-        if (mMaterialId != categoryId) {
-            return;
-        }
+    public int getCategoryId() {
+        return mMaterialId;
+    }
+
+    @Override
+    public void onLoading() {
+
         setUpState(State.LOADING);
     }
 
     @Override
-    public void onError(int categoryId) {
-        if (mMaterialId != categoryId) {
-            return;
-        }
+    public void onError() {
         setUpState(State.ERROR);
     }
 
     @Override
-    public void onEmpty(int categoryId) {
-        if (mMaterialId != categoryId) {
-            return;
-        }
+    public void onEmpty() {
+
         setUpState(State.EMPTY);
     }
 
     @Override
-    public void onLoadMoreError(int categoryId) {
+    public void onLoadMoreError() {
 
     }
 
     @Override
-    public void onLoadMoreEmpty(int categoryId) {
+    public void onLoadMoreEmpty() {
 
     }
 
     @Override
-    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents,int categoryId) {
+    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
 
     }
 

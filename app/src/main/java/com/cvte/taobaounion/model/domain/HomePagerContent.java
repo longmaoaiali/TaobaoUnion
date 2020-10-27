@@ -316,7 +316,7 @@ public class HomePagerContent {
             return volume;
         }
 
-        public void setVolume(long volume) {
+        public void setVolume(int volume) {
             this.volume = volume;
         }
 

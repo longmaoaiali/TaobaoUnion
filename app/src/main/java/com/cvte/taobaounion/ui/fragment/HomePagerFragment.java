@@ -89,6 +89,42 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     }
 
     @Override
+    protected void initViewListener() {
+        looperPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position % mLooperPagerAdapter.getDataSize()==0){
+                    return;
+                }
+                int targetPosition = position % mLooperPagerAdapter.getDataSize();
+                updateLooperIndicator(targetPosition);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void updateLooperIndicator(int targetPosition) {
+        for (int i = 0; i < looperPointContainer.getChildCount(); i++) {
+            View point = looperPointContainer.getChildAt(i);
+            if (i==targetPosition) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+        }
+
+    }
+
+    @Override
     protected void loadData() {
         Bundle argument = getArguments();
         String title = argument.getString(Constant.KEY_HOME_PAGE_TITLE);
@@ -163,9 +199,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         mLooperPagerAdapter.setData(contents);
         //添加轮播图上面的小点
         looperPointContainer.removeAllViews();
-        GradientDrawable selectDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
-        GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
-        normalDrawable.setColor(getContext().getColor(R.color.colorWhite));
+        //GradientDrawable selectDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        //GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        //normalDrawable.setColor(getContext().getColor(R.color.colorWhite));
 
         //设置在中间可以左右滑动，但是取无限轮播的第一个
         int dx = (Integer.MAX_VALUE / 2) % contents.size();
@@ -179,7 +215,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
             layoutParams.leftMargin = SizeUtils.dip2px(getContext(),5);
             layoutParams.rightMargin = SizeUtils.dip2px(getContext(),5);
             point.setLayoutParams(layoutParams);
-            point.setBackground(selectDrawable);
+            if (i==0) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+
             looperPointContainer.addView(point);
         }
     }

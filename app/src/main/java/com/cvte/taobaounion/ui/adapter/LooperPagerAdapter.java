@@ -26,6 +26,10 @@ public class LooperPagerAdapter extends PagerAdapter{
 
     }
 
+    public int getDataSize(){
+        return mDatas.size();
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         //处理无限轮播的越界问题

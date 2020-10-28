@@ -1,8 +1,11 @@
 package com.cvte.taobaounion.ui.fragment;
 
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
@@ -15,6 +18,7 @@ import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
 import com.cvte.taobaounion.ui.adapter.LooperPagerAdapter;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
+import com.cvte.taobaounion.utils.SizeUtils;
 import com.cvte.taobaounion.view.ICategoryCallback;
 
 import java.security.PublicKey;
@@ -40,6 +44,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @BindView(R.id.looper_pager)
     public ViewPager looperPage;
+
+    @BindView(R.id.home_pager_title)
+    public TextView currentCategoryTitle;
+
+    @BindView(R.id.looper_point_container)
+    public LinearLayout looperPointContainer;
+
 
     private HomepageContentAdapter mHomepageContentAdapter;
     private LooperPagerAdapter mLooperPagerAdapter;
@@ -87,6 +98,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         LogUtils.d(TAG,"materialId--> "+ mMaterialId);
         if (mCategoryPagerPresenter != null) {
             mCategoryPagerPresenter.getContentByCategoryId(mMaterialId);
+        }
+
+        if (currentCategoryTitle != null) {
+            currentCategoryTitle.setText(title);
         }
     }
 
@@ -146,6 +161,27 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
         LogUtils.d(TAG,"contents size-->"+contents.size());
         mLooperPagerAdapter.setData(contents);
+        //添加轮播图上面的小点
+        looperPointContainer.removeAllViews();
+        GradientDrawable selectDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        normalDrawable.setColor(getContext().getColor(R.color.colorWhite));
+
+        //设置在中间可以左右滑动，但是取无限轮播的第一个
+        int dx = (Integer.MAX_VALUE / 2) % contents.size();
+        int targetPosition = (Integer.MAX_VALUE / 2) - dx;
+        looperPage.setCurrentItem(targetPosition);
+
+        for (int i = 0; i < contents.size(); i++) {
+            View point = new View(getContext());
+            int size = SizeUtils.dip2px(getContext(),8);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size,size);
+            layoutParams.leftMargin = SizeUtils.dip2px(getContext(),5);
+            layoutParams.rightMargin = SizeUtils.dip2px(getContext(),5);
+            point.setLayoutParams(layoutParams);
+            point.setBackground(selectDrawable);
+            looperPointContainer.addView(point);
+        }
     }
 
     @Override

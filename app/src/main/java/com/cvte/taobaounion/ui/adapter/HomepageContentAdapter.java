@@ -82,7 +82,15 @@ public class HomepageContentAdapter extends RecyclerView.Adapter<HomepageContent
         public void setData(HomePagerContent.DataBean dataBean) {
             long CouponAmount = dataBean.getCoupon_amount();
             title.setText(dataBean.getTitle());
-            Glide.with(itemView.getContext()).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(cover);
+
+            /*调整图片size大小*/
+            ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
+            int width = layoutParams.width;
+            int height = layoutParams.height;
+            int coverSize = (width>height?width:height)/2;
+
+
+            Glide.with(itemView.getContext()).load(UrlUtils.getCoverPath(dataBean.getPict_url(),coverSize)).into(cover);
             offPriceTv.setText(String.format(itemView.getContext().getString(R.string.text_goods_off_price),CouponAmount));
 
             String price = dataBean.getZk_final_price();

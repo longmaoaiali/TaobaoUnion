@@ -35,7 +35,12 @@ public class LooperPagerAdapter extends PagerAdapter{
         //处理无限轮播的越界问题
         int realPosition = position % mDatas.size();
         HomePagerContent.DataBean dataBean = mDatas.get(realPosition);
-        String coverUrl = UrlUtils.getCoverPath(dataBean.getPict_url());
+        //ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+        int width = container.getMeasuredWidth();
+        int height = container.getMeasuredHeight();
+        int ivSize = (width>height?width:height)/2;
+
+        String coverUrl = UrlUtils.getCoverPath(dataBean.getPict_url(),ivSize);
         ImageView iv = new ImageView(container.getContext());
 
         /*设置图片填充*/

@@ -4,6 +4,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +52,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     @BindView(R.id.looper_point_container)
     public LinearLayout looperPointContainer;
 
+    @BindView(R.id.home_pager_parent)
+    public LinearLayout homePagerParent;
+
 
     private HomepageContentAdapter mHomepageContentAdapter;
     private LooperPagerAdapter mLooperPagerAdapter;
@@ -90,6 +94,24 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @Override
     protected void initViewListener() {
+        homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                /*动态设置recyclerView 的高度，来解决NestedScrollView 嵌套RecyclerView
+                导致RecyclerView适配器一直为每个item创建onCreateViewHolder { newInnerHolder(itemView) },导致内存过大的问题*/
+                int height = homePagerParent.getMeasuredHeight();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentList.getLayoutParams();
+                layoutParams.height = height;
+                mContentList.setLayoutParams(layoutParams);
+
+                //高度只需要改变一次,去除监听
+                if (height != 0) {
+                    homePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
+
         looperPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

@@ -8,9 +8,11 @@
     android:gravity="center"
     android:background="@color/colorWhite">
 
-    <androidx.core.widget.NestedScrollView
+    <com.cvte.taobaounion.ui.custom.TbNestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:id="@+id/home_pager_nested_scroller">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,32 +20,42 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <RelativeLayout
-                android:layout_marginBottom="14dp"
+            <LinearLayout
+                android:id="@+id/home_pager_header_container"
                 android:layout_width="match_parent"
-                android:layout_height="125dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <androidx.viewpager.widget.ViewPager
+                <RelativeLayout
+                    android:layout_marginBottom="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/looper_pager"
-                    android:overScrollMode="never"/>
+                    android:layout_height="125dp">
 
-                <LinearLayout
-                    android:id="@+id/looper_point_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    />
+                    <androidx.viewpager.widget.ViewPager
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/looper_pager"
+                        android:overScrollMode="never"/>
 
-            </RelativeLayout>
+                    <LinearLayout
+                        android:id="@+id/looper_point_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        />
+
+                </RelativeLayout>
 
 
 
-            <include layout="@layout/include_home_pager_title_part"/>
+                <include layout="@layout/include_home_pager_title_part"/>
+
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -53,7 +65,7 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </com.cvte.taobaounion.ui.custom.TbNestedScrollView>
 
 
 

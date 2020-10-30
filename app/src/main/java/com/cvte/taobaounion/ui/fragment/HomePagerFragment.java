@@ -17,6 +17,7 @@ import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
 import com.cvte.taobaounion.ui.adapter.LooperPagerAdapter;
+import com.cvte.taobaounion.ui.custom.TbNestedScrollView;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.SizeUtils;
@@ -54,6 +55,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @BindView(R.id.home_pager_parent)
     public LinearLayout homePagerParent;
+
+    @BindView(R.id.home_pager_nested_scroller)
+    public TbNestedScrollView homePagerNestedView;
+
+    @BindView(R.id.home_pager_header_container)
+    public LinearLayout homePagerHeaderContainer;
+
 
 
     private HomepageContentAdapter mHomepageContentAdapter;
@@ -97,6 +105,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                int headerHeight = homePagerHeaderContainer.getMeasuredHeight();
+                homePagerNestedView.setHeaderHeight(headerHeight);
                 /*动态设置recyclerView 的高度，来解决NestedScrollView 嵌套RecyclerView
                 导致RecyclerView适配器一直为每个item创建onCreateViewHolder { newInnerHolder(itemView) },导致内存过大的问题*/
                 int height = homePagerParent.getMeasuredHeight();

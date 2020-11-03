@@ -17,6 +17,7 @@ import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
 import com.cvte.taobaounion.ui.adapter.LooperPagerAdapter;
+import com.cvte.taobaounion.ui.custom.AutoLoopViewPager;
 import com.cvte.taobaounion.ui.custom.TbNestedScrollView;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
@@ -45,7 +46,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     public RecyclerView mContentList;
 
     @BindView(R.id.looper_pager)
-    public ViewPager looperPage;
+    public AutoLoopViewPager looperPage;
 
     @BindView(R.id.home_pager_title)
     public TextView currentCategoryTitle;
@@ -63,6 +64,17 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     public LinearLayout homePagerHeaderContainer;
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        looperPage.startLoop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        looperPage.stopLoop();
+    }
 
     private HomepageContentAdapter mHomepageContentAdapter;
     private LooperPagerAdapter mLooperPagerAdapter;
@@ -105,6 +117,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                if (homePagerHeaderContainer == null) {
+                    return;
+                }
                 int headerHeight = homePagerHeaderContainer.getMeasuredHeight();
                 homePagerNestedView.setHeaderHeight(headerHeight);
                 /*动态设置recyclerView 的高度，来解决NestedScrollView 嵌套RecyclerView
@@ -130,7 +145,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
             @Override
             public void onPageSelected(int position) {
-                if(position % mLooperPagerAdapter.getDataSize()==0){
+                if(mLooperPagerAdapter.getDataSize()==0){
                     return;
                 }
                 int targetPosition = position % mLooperPagerAdapter.getDataSize();
@@ -145,14 +160,17 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     }
 
     private void updateLooperIndicator(int targetPosition) {
-        for (int i = 0; i < looperPointContainer.getChildCount(); i++) {
-            View point = looperPointContainer.getChildAt(i);
-            if (i==targetPosition) {
-                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
-            } else {
-                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+        if (looperPointContainer != null) {
+            for (int i = 0; i < looperPointContainer.getChildCount(); i++) {
+                View point = looperPointContainer.getChildAt(i);
+                if (i==targetPosition) {
+                    point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+                } else {
+                    point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+                }
             }
         }
+
 
     }
 

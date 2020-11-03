@@ -19,6 +19,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 public class LooperPagerAdapter extends PagerAdapter{
     private List<HomePagerContent.DataBean> mDatas = new ArrayList<>();
+    private OnLooperPageClickListener mOnLooperPageClickListener = null;
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -49,6 +50,15 @@ public class LooperPagerAdapter extends PagerAdapter{
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         Glide.with(container.getContext()).load(coverUrl).into(iv);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnLooperPageClickListener != null) {
+                    HomePagerContent.DataBean item = mDatas.get(realPosition);
+                    mOnLooperPageClickListener.onLooperItemClick(item);
+                }
+            }
+        });
         container.addView(iv);
         return iv;
     }
@@ -67,5 +77,13 @@ public class LooperPagerAdapter extends PagerAdapter{
         mDatas.clear();
         mDatas.addAll(contents);
         notifyDataSetChanged();
+    }
+
+    public void setOnLooperPageClickListener(OnLooperPageClickListener listener){
+        this.mOnLooperPageClickListener = listener;
+    }
+
+    public interface OnLooperPageClickListener {
+        void onLooperItemClick(HomePagerContent.DataBean item);
     }
 }

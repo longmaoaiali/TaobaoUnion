@@ -1,5 +1,6 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.model.domain.HomePagerContent;
 import com.cvte.taobaounion.presenter.ICategoryPagerPresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
+import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
 import com.cvte.taobaounion.ui.adapter.LooperPagerAdapter;
@@ -36,7 +38,7 @@ import butterknife.BindView;
  * Created by user on 2020/10/23.
  */
 
-public class HomePagerFragment extends BaseFragment implements ICategoryCallback {
+public class HomePagerFragment extends BaseFragment implements ICategoryCallback, HomepageContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPageClickListener {
 
     public static final String TAG = "HomePagerFragment";
     private ICategoryPagerPresenter mCategoryPagerPresenter;
@@ -114,6 +116,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @Override
     protected void initViewListener() {
+        //recyclerView item点击事件 轮播图点击事件
+        mHomepageContentAdapter.setOnListItemClickListener(this);
+        mLooperPagerAdapter.setOnLooperPageClickListener(this);
+
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -285,5 +291,21 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         if (mCategoryPagerPresenter != null) {
             mCategoryPagerPresenter.unregisterViewCallback(this);
         }
+    }
+
+    @Override
+    public void onItemClick(HomePagerContent.DataBean item) {
+        handleItemClick(item);
+    }
+
+    @Override
+    public void onLooperItemClick(HomePagerContent.DataBean item) {
+
+        handleItemClick(item);
+    }
+
+    private void handleItemClick(HomePagerContent.DataBean item) {
+        //todo: 处理looper recyclerView 点击事件
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.cvte.taobaounion.R;
+import com.cvte.taobaounion.base.BaseActivity;
 import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.ui.fragment.HomeFragment;
 import com.cvte.taobaounion.ui.fragment.RedPacketFragment;
@@ -22,7 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private BottomNavigationView mNavigationView;
@@ -31,14 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment mSearchFragment;
     private SelectFragment mSelectFragment;
     private FragmentManager mFm;
-    private Unbinder mBind;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mBind = ButterKnife.bind(this);
         initPermission();
         initView();
         initFragments();
@@ -46,12 +44,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBind != null) {
-            mBind.unbind();
-        }
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
     }
+
 
     private void initPermission() {
         int networkPermission = checkSelfPermission(Manifest.permission.INTERNET);

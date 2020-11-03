@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 
 public class HomepageContentAdapter extends RecyclerView.Adapter<HomepageContentAdapter.InnerHolder> {
     List<HomePagerContent.DataBean> data = new ArrayList<>();
+    private OnListItemClickListener mOnListItemClickListener = null;
 
     @Override
     public InnerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,6 +40,15 @@ public class HomepageContentAdapter extends RecyclerView.Adapter<HomepageContent
     public void onBindViewHolder(InnerHolder holder, int position) {
         HomePagerContent.DataBean dataBean = data.get(position);
         holder.setData(dataBean);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnListItemClickListener != null) {
+                    HomePagerContent.DataBean item = data.get(position);
+                    mOnListItemClickListener.onItemClick(item);
+                }
+            }
+        });
     }
 
     @Override
@@ -101,5 +111,14 @@ public class HomepageContentAdapter extends RecyclerView.Adapter<HomepageContent
             finalPriceTv.setText(String.format("%.2f",resultPrice));
             saleCounts.setText(String.format(itemView.getContext().getString(R.string.text_goods_sale_counts),dataBean.getVolume()));
         }
+    }
+    
+    
+    public void setOnListItemClickListener(OnListItemClickListener listener){
+        this.mOnListItemClickListener = listener;
+    }
+    
+    public interface OnListItemClickListener{
+        void onItemClick(HomePagerContent.DataBean item);
     }
 }

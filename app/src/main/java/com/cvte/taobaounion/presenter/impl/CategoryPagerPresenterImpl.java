@@ -26,7 +26,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
 
-    private CategoryPagerPresenterImpl(){
+    public CategoryPagerPresenterImpl(){
 
     }
 

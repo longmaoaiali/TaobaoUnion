@@ -15,6 +15,7 @@ import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.model.domain.HomePagerContent;
 import com.cvte.taobaounion.presenter.ICategoryPagerPresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
+import com.cvte.taobaounion.presenter.impl.TicketPresenterImpl;
 import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
@@ -23,6 +24,7 @@ import com.cvte.taobaounion.ui.custom.AutoLoopViewPager;
 import com.cvte.taobaounion.ui.custom.TbNestedScrollView;
 import com.cvte.taobaounion.utils.Constant;
 import com.cvte.taobaounion.utils.LogUtils;
+import com.cvte.taobaounion.utils.PresenterManager;
 import com.cvte.taobaounion.utils.SizeUtils;
 import com.cvte.taobaounion.view.ICategoryCallback;
 
@@ -64,6 +66,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @BindView(R.id.home_pager_header_container)
     public LinearLayout homePagerHeaderContainer;
+    private TicketPresenterImpl mTicketPresenter;
 
 
     @Override
@@ -306,6 +309,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     private void handleItemClick(HomePagerContent.DataBean item) {
         //todo: 处理looper recyclerView 点击事件
+        String title = item.getTitle();
+        String url = item.getClick_url();
+        String cover = item.getClick_url();
+
+        mTicketPresenter = PresenterManager.getInstance().getTicketPresenter();
+        mTicketPresenter.getTicket(title,url,cover);
         startActivity(new Intent(getContext(), TicketActivity.class));
     }
 }

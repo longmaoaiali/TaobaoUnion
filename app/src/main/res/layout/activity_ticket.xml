@@ -12,6 +12,7 @@
         android:background="@color/colorPrimaryDark">
 
         <ImageView
+            android:id="@+id/ticket_press_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -29,12 +30,14 @@
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/ticket_cover"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="33dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:background="@color/colorGrey"/>
 
     <EditText
+        android:id="@+id/ticket_code"
         android:layout_width="244dp"
         android:layout_height="40dp"
         android:layout_marginTop="30dp"
@@ -42,6 +45,7 @@
         android:focusable="false"/>
 
     <TextView
+        android:id="@+id/ticket_copy_btn"
         android:layout_width="141dp"
         android:layout_height="40dp"
         android:layout_marginTop="30dp"

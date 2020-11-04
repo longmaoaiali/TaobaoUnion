@@ -311,7 +311,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         //todo: 处理looper recyclerView 点击事件
         String title = item.getTitle();
         String url = item.getClick_url();
-        String cover = item.getClick_url();
+        String cover = item.getPict_url();
 
         mTicketPresenter = PresenterManager.getInstance().getTicketPresenter();
         mTicketPresenter.getTicket(title,url,cover);

@@ -6,9 +6,14 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
+    <com.cvte.taobaounion.ui.custom.LoadingView
+        android:layout_width="33dp"
+        android:layout_height="33dp"/>
+
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加载中" />
+        android:text="玩命加载中" />
 
 </LinearLayout>

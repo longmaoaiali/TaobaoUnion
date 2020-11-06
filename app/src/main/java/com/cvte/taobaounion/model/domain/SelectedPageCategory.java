@@ -20,6 +20,16 @@ public class SelectedPageCategory {
     private String message;
     private List<DataBean> data;
 
+    @Override
+    public String toString() {
+        return "SelectedPageCategory{" +
+                "success=" + success +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -53,6 +63,15 @@ public class SelectedPageCategory {
     }
 
     public static class DataBean {
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "type=" + type +
+                    ", favorites_id=" + favorites_id +
+                    ", favorites_title='" + favorites_title + '\'' +
+                    '}';
+        }
+
         /**
          * type : 1
          * favorites_id : 19876595

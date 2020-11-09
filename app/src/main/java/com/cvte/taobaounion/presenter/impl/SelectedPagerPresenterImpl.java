@@ -1,7 +1,7 @@
 package com.cvte.taobaounion.presenter.impl;
 
 import com.cvte.taobaounion.model.Api;
-import com.cvte.taobaounion.model.domain.SelectedContent;
+import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
 import com.cvte.taobaounion.presenter.ISelectedPagePresenter;
 import com.cvte.taobaounion.utils.LogUtils;
@@ -82,14 +82,14 @@ public class SelectedPagerPresenterImpl implements ISelectedPagePresenter {
         int categoryId = item.getFavorites_id();
         String targetUrl = UrlUtils.getSelectedPageContentUrl(categoryId);
 
-        Call<SelectedContent> task = mApi.getSelectedPageContent(targetUrl);
-        task.enqueue(new Callback<SelectedContent>() {
+        Call<SelectedContentNew> task = mApi.getSelectedPageContent(targetUrl);
+        task.enqueue(new Callback<SelectedContentNew>() {
             @Override
-            public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {
+            public void onResponse(Call<SelectedContentNew> call, Response<SelectedContentNew> response) {
                 int responseCode = response.code();
                 LogUtils.d(TAG,"getContentByCategory request code-->"+responseCode);
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    SelectedContent result = response.body();
+                    SelectedContentNew result = response.body();
                     if (mViewCallback != null) {
                         mViewCallback.onContentLoaded(result);
                     }
@@ -101,7 +101,7 @@ public class SelectedPagerPresenterImpl implements ISelectedPagePresenter {
             }
 
             @Override
-            public void onFailure(Call<SelectedContent> call, Throwable t) {
+            public void onFailure(Call<SelectedContentNew> call, Throwable t) {
                 if (mViewCallback != null) {
                     mViewCallback.onNetworkError();
                 }

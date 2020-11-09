@@ -1,7 +1,7 @@
 package com.cvte.taobaounion.view;
 
 import com.cvte.taobaounion.base.IBaseCallback;
-import com.cvte.taobaounion.model.domain.SelectedContent;
+import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
 
 /**
@@ -20,5 +20,5 @@ public interface ISelectedPageCallback extends IBaseCallback {
      * 根据分类ID获取的具体内容
      * @param content
      */
-    void onContentLoaded(SelectedContent content);
+    void onContentLoaded(SelectedContentNew content);
 }

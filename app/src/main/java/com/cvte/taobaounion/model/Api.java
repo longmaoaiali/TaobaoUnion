@@ -2,7 +2,7 @@ package com.cvte.taobaounion.model;
 
 import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.model.domain.HomePagerContent;
-import com.cvte.taobaounion.model.domain.SelectedContent;
+import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
 import com.cvte.taobaounion.model.domain.TicketParams;
 import com.cvte.taobaounion.model.domain.TicketResult;
@@ -33,5 +33,5 @@ public interface Api {
     Call<SelectedPageCategory> getSelectedPageCategories();
 
     @GET()
-    Call<SelectedContent> getSelectedPageContent(@Url String url);
+    Call<SelectedContentNew> getSelectedPageContent(@Url String url);
 }

@@ -66,6 +66,10 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
         if (data != null) {
             this.mDataBeans.clear();
             this.mDataBeans.addAll(data);
+            if (mDataBeans.size()>0) {
+                //第一次进入activity也需要代码设置点击事件发起网络请求
+                mOnLeftItemClickListener.onLeftItemClick(mDataBeans.get(mCurrentSelectedPosition));
+            }
             notifyDataSetChanged();
         }
         //mDataBeans = categories.getData();
@@ -79,6 +83,7 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
 
     public void setOnLeftItemClickListener(OnLeftItemClickListener listener){
         this.mOnLeftItemClickListener = listener;
+
     }
 
     public interface OnLeftItemClickListener{

@@ -8,4 +8,5 @@
     <string name="text_goods_off_price">省%1$d元</string>
     <string name="text_goods_original_price">￥%1$s</string>
     <string name="text_goods_sale_counts">%1$d人已经购买</string>
+    <string name="colorEEEEEE">#EFEEEE</string>
 </resources>

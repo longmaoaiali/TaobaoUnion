@@ -8,5 +8,6 @@
 
     <color name="colorTabSelected">#fff</color>
     <color name="colorTabNormal">#99ffffff</color>
+    <color name="colorEEEEEE">#EEEEEE</color>
 
 </resources>

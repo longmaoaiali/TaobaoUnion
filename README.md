@@ -12,6 +12,8 @@
   2020:11:03 实现轮播图无限轮播功能，定义获取淘口令的接口 callback presenter presenterImpl  
   2020:11:04 Retrofit网络框架实现获取淘口令，并显示数据在activity UI上; 实现自定义LoadingView转圈圈的UI
   2020:11:05 实现获取优惠券的网络请求，集成自定义的LoadingView, 定义精选功能的接口  
+  2020:11:09 实现网络请求数据的显示，并且更新精选内容的Bean类(web请求返回数据与文档描述不符，根据实际返回结果进行bean类更新)  
+  
   
   
   

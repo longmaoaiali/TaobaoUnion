@@ -7,6 +7,7 @@ import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.SellContent;
 import com.cvte.taobaounion.presenter.IOnSellPagePresenter;
 import com.cvte.taobaounion.ui.adapter.SellContentAdapter;
+import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.PresenterManager;
 import com.cvte.taobaounion.view.IOnSellPageCallback;
 
@@ -20,6 +21,7 @@ import butterknife.BindView;
 
 public class RedPacketFragment extends BaseFragment implements IOnSellPageCallback {
 
+    private static final String TAG = "RedPacketFragment";
     private IOnSellPagePresenter mOnSellPagePresenter;
     public static final int DEFAULT_SPAN_COUNT = 2;
 
@@ -59,7 +61,7 @@ public class RedPacketFragment extends BaseFragment implements IOnSellPageCallba
 
     @Override
     public void onLoading() {
-
+        setUpState(State.LOADING);
     }
 
     @Override
@@ -70,6 +72,9 @@ public class RedPacketFragment extends BaseFragment implements IOnSellPageCallba
     @Override
     public void onContentLoadedSuccess(SellContent result) {
         //todo:update ui
+        setUpState(State.SUCCESS);
+        LogUtils.d(TAG,"sell result-->"+result.getData().getTbk_dg_optimus_material_response().getResult_list().getMap_data().size());
+        mSellContentAdapter.setData(result);
     }
 
     @Override

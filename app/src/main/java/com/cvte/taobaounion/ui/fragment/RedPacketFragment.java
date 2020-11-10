@@ -1,5 +1,6 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.graphics.Rect;
 import android.view.View;
 
 import com.cvte.taobaounion.R;
@@ -9,6 +10,7 @@ import com.cvte.taobaounion.presenter.IOnSellPagePresenter;
 import com.cvte.taobaounion.ui.adapter.SellContentAdapter;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.PresenterManager;
+import com.cvte.taobaounion.utils.SizeUtils;
 import com.cvte.taobaounion.view.IOnSellPageCallback;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -51,7 +53,17 @@ public class RedPacketFragment extends BaseFragment implements IOnSellPageCallba
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),DEFAULT_SPAN_COUNT);
         mContentRv.setLayoutManager(gridLayoutManager);
         mContentRv.setAdapter(mSellContentAdapter);
+        mContentRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int offset = SizeUtils.dip2px(getContext(),2.5f);
+                outRect.top = offset;
+                outRect.bottom = offset;
+                outRect.left = offset;
+                outRect.right = offset;
 
+            }
+        });
     }
 
     @Override

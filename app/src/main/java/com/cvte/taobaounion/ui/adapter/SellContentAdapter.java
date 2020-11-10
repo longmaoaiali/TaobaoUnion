@@ -1,17 +1,24 @@
 package com.cvte.taobaounion.ui.adapter;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.model.domain.SellContent;
 import com.cvte.taobaounion.utils.LogUtils;
+import com.cvte.taobaounion.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by user on 2020/11/10.
@@ -31,7 +38,8 @@ public class SellContentAdapter extends RecyclerView.Adapter<SellContentAdapter.
 
     @Override
     public void onBindViewHolder(InnerHolder holder, int position) {
-
+        SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean = mMapData.get(position);
+        holder.setData(mapDataBean);
     }
 
     @Override
@@ -47,8 +55,38 @@ public class SellContentAdapter extends RecyclerView.Adapter<SellContentAdapter.
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.sell_cover)
+        public ImageView sellCover;
+
+        @BindView(R.id.sell_title)
+        public TextView titletv;
+
+        @BindView(R.id.sell_off_price)
+        public TextView offPrice;
+
+        @BindView(R.id.sell_origin_prise)
+        public TextView originPrise;
+
+
         public InnerHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+
+        public void setData(SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean) {
+            titletv.setText(mapDataBean.getTitle());
+            String coverPath = UrlUtils.getCoverPath(mapDataBean.getPict_url());
+            Glide.with(itemView.getContext()).load(coverPath).into(sellCover);
+
+            String originalPrise = mapDataBean.getZk_final_price();
+            originPrise.setText("￥"+originalPrise);
+            originPrise.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+            int couponAmount = mapDataBean.getCoupon_amount();
+            float originalPriseParse = Float.parseFloat(originalPrise);
+            float finalPrise = originalPriseParse - couponAmount;
+            offPrice.setText("券后价："+String.format("%.2f",finalPrise));
         }
     }
 }

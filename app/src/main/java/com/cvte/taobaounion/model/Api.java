@@ -4,6 +4,7 @@ import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.model.domain.HomePagerContent;
 import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
+import com.cvte.taobaounion.model.domain.SellContent;
 import com.cvte.taobaounion.model.domain.TicketParams;
 import com.cvte.taobaounion.model.domain.TicketResult;
 
@@ -34,4 +35,7 @@ public interface Api {
 
     @GET()
     Call<SelectedContentNew> getSelectedPageContent(@Url String url);
+
+    @GET
+    Call<SellContent> getOnSellPageContent(@Url String url);
 }

@@ -1,12 +1,13 @@
 package com.cvte.taobaounion.view;
 
+import com.cvte.taobaounion.base.IBaseCallback;
 import com.cvte.taobaounion.model.domain.SellContent;
 
 /**
  * Created by user on 2020/11/10.
  */
 
-public interface IOnSellPageCallback {
+public interface IOnSellPageCallback extends IBaseCallback{
 
     /**
      * 内容加载成功

@@ -1,5 +1,6 @@
 package com.cvte.taobaounion.ui.adapter;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
     private static final String TAG = "SelectedPageContentAdapter";
     private List<SelectedContentNew.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mData =
             new ArrayList<>();
+    private OnSelectedPageContentClickListener mOnSelectedPageContentClickListener = null;
 
     @Override
     public InnerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,6 +44,15 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
         //todo:
         SelectedContentNew.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean = mData.get(position);
         holder.setData(mapDataBean);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnSelectedPageContentClickListener != null) {
+                    mOnSelectedPageContentClickListener.onContentItemClick(mapDataBean);
+                }
+            }
+        });
 
     }
 
@@ -88,14 +99,36 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
             LogUtils.d(TAG,"mapDataBean -->  "+mapDataBean.getShop_title());
             //商品名 优惠价 原价 图片 店家按钮
             selectGooodsTitle.setText(mapDataBean.getTitle());
-            selectOffPrice.setText(mapDataBean.getCoupon_amount()+"");
-            selectOriginalPrice.setText(mapDataBean.getZk_final_price());
 
             String picUrl = UrlUtils.getCoverPath(mapDataBean.getPict_url());
             LogUtils.d(TAG,"mapDataBean picture url-->  "+picUrl);
             Glide.with(itemView.getContext()).load(picUrl).into(cover);
 
+            if (TextUtils.isEmpty(mapDataBean.getCoupon_click_url())) {
+                selectOriginalPrice.setText("晚了，优惠券没了");
+                selectBuyBtn.setVisibility(View.GONE);
+            } else {
+                selectBuyBtn.setVisibility(View.VISIBLE);
+                selectOriginalPrice.setText("原价"+mapDataBean.getZk_final_price());
+            }
+
+            if (TextUtils.isEmpty(mapDataBean.getCoupon_info())) {
+                selectOffPrice.setVisibility(View.GONE);
+            } else {
+                selectOffPrice.setVisibility(View.VISIBLE);
+                selectOffPrice.setText(mapDataBean.getCoupon_info());
+            }
 
         }
     }
+
+    public void setOnSelectedPageContentClickListener(OnSelectedPageContentClickListener listener){
+        this.mOnSelectedPageContentClickListener = listener;
+    }
+
+    public interface  OnSelectedPageContentClickListener{
+        void onContentItemClick(SelectedContentNew.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean item);
+    }
+
+
 }

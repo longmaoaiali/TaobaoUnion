@@ -1,7 +1,9 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
 import com.cvte.taobaounion.presenter.ISelectedPagePresenter;
+import com.cvte.taobaounion.presenter.ITicketPresenter;
+import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.SelectedPageContentAdapter;
 import com.cvte.taobaounion.ui.adapter.SelectedPageLeftAdapter;
 import com.cvte.taobaounion.utils.LogUtils;
@@ -83,6 +87,24 @@ public class SelectFragment extends BaseFragment implements ISelectedPageCallbac
     @Override
     protected void initViewListener() {
         super.initViewListener();
+        mSelectedPageContentAdapter.setOnSelectedPageContentClickListener(new SelectedPageContentAdapter.OnSelectedPageContentClickListener() {
+            @Override
+            public void onContentItemClick(SelectedContentNew.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean item) {
+                //todo: 处理looper recyclerView 点击事件
+                String title = item.getTitle();
+                String url = item.getCoupon_click_url();
+                if (TextUtils.isEmpty(url)) {
+                    url = item.getClick_url();
+                }
+                String cover = item.getPict_url();
+
+                ITicketPresenter mTicketPresenter = PresenterManager.getInstance().getTicketPresenter();
+                mTicketPresenter.getTicket(title,url,cover);
+                startActivity(new Intent(getContext(), TicketActivity.class));
+
+            }
+        });
+
         mSelectedPageLeftAdapter.setOnLeftItemClickListener(new SelectedPageLeftAdapter.OnLeftItemClickListener() {
             @Override
             public void onLeftItemClick(SelectedPageCategory.DataBean item) {
@@ -105,7 +127,7 @@ public class SelectFragment extends BaseFragment implements ISelectedPageCallbac
 
     @Override
     public void onNetworkError() {
-
+        setUpState(State.ERROR);
     }
 
     @Override
@@ -117,6 +139,17 @@ public class SelectFragment extends BaseFragment implements ISelectedPageCallbac
     public void onEmpty() {
 
     }
+
+    @Override
+    protected void onRetryClick() {
+        //点击重试
+        if (mSelectedPagePresenter != null) {
+            mSelectedPagePresenter.reloadContent();
+        }
+
+    }
+
+
 
     @Override
     public void onCategoriesLoaded(SelectedPageCategory categories) {
@@ -134,5 +167,7 @@ public class SelectFragment extends BaseFragment implements ISelectedPageCallbac
 
         mSelectedPageContentAdapter.setData(content);
         LogUtils.d(TAG,"onContentLoaded-->");
+        //转换到新的界面就会重定位到开头
+        rightCategoryContentList.scrollToPosition(0);
     }
 }

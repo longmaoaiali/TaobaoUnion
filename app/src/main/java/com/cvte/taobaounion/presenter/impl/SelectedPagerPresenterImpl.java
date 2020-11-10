@@ -112,8 +112,6 @@ public class SelectedPagerPresenterImpl implements ISelectedPagePresenter {
     //重新加载
     @Override
     public void reloadContent() {
-        if (mCurrentCategoryItem != null) {
-            this.getContentByCategory(mCurrentCategoryItem);
-        }
+        this.getCategories();
     }
 }

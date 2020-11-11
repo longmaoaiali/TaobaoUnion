@@ -29,6 +29,7 @@ public class SellContentAdapter extends RecyclerView.Adapter<SellContentAdapter.
 
     private List<SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mMapData = new ArrayList<>();
     private static final String TAG = "SellContentAdapter";
+    private OnSellPageItemClickListener mOnSellPageItemClickListener;
 
     @Override
     public InnerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,6 +41,15 @@ public class SellContentAdapter extends RecyclerView.Adapter<SellContentAdapter.
     public void onBindViewHolder(InnerHolder holder, int position) {
         SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean = mMapData.get(position);
         holder.setData(mapDataBean);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnSellPageItemClickListener != null) {
+                    mOnSellPageItemClickListener.onSellItemClick(mapDataBean);
+                }
+            }
+        });
     }
 
     @Override
@@ -88,5 +98,13 @@ public class SellContentAdapter extends RecyclerView.Adapter<SellContentAdapter.
             float finalPrise = originalPriseParse - couponAmount;
             offPrice.setText("券后价："+String.format("%.2f",finalPrise));
         }
+    }
+
+    public void setOnSellPageItemClickListener(OnSellPageItemClickListener listener) {
+        this.mOnSellPageItemClickListener = listener;
+    }
+
+    public interface OnSellPageItemClickListener {
+        void onSellItemClick(SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean);
     }
 }

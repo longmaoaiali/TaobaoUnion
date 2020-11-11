@@ -2,6 +2,8 @@ package com.cvte.taobaounion.model;
 
 import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.model.domain.HomePagerContent;
+import com.cvte.taobaounion.model.domain.SearchRecommand;
+import com.cvte.taobaounion.model.domain.SearchResult;
 import com.cvte.taobaounion.model.domain.SelectedContentNew;
 import com.cvte.taobaounion.model.domain.SelectedPageCategory;
 import com.cvte.taobaounion.model.domain.SellContent;
@@ -38,4 +40,11 @@ public interface Api {
 
     @GET
     Call<SellContent> getOnSellPageContent(@Url String url);
+
+    @GET("search/recommend")
+    Call<SearchRecommand> getRecommendWorlds();
+
+    @GET("search")
+    Call<SearchResult> doSearch(@Query("page") int page,@Query("keyword") String keyword);
+
 }

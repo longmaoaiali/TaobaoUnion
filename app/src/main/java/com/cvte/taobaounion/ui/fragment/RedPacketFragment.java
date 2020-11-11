@@ -1,12 +1,16 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.SellContent;
 import com.cvte.taobaounion.presenter.IOnSellPagePresenter;
+import com.cvte.taobaounion.presenter.ITicketPresenter;
+import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.SellContentAdapter;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.PresenterManager;
@@ -61,6 +65,27 @@ public class RedPacketFragment extends BaseFragment implements IOnSellPageCallba
                 outRect.bottom = offset;
                 outRect.left = offset;
                 outRect.right = offset;
+
+            }
+        });
+    }
+
+    @Override
+    protected void initViewListener() {
+        super.initViewListener();
+        mSellContentAdapter.setOnSellPageItemClickListener(new SellContentAdapter.OnSellPageItemClickListener() {
+            @Override
+            public void onSellItemClick(SellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean) {
+                String title = mapDataBean.getTitle();
+                String url = mapDataBean.getCoupon_click_url();
+                if (TextUtils.isEmpty(url)) {
+                    url = mapDataBean.getClick_url();
+                }
+                String cover = mapDataBean.getPict_url();
+
+                ITicketPresenter mTicketPresenter = PresenterManager.getInstance().getTicketPresenter();
+                mTicketPresenter.getTicket(title,url,cover);
+                startActivity(new Intent(getContext(), TicketActivity.class));
 
             }
         });

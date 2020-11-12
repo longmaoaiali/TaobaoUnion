@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <declare-styleable name="FlowTextStyle">
+        <attr name="horizontalSpace" format="dimension"/>
+        <attr name="verticalSpace" format="dimension"/>
+    </declare-styleable>
+
 </resources>

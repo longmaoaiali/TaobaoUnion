@@ -60,7 +60,7 @@ public class JsonCacheUtil {
         mSharedPreferences.edit().remove(key).apply();
     }
 
-    public <T extends Class> T getCacheValue(String key,Class<T> clazz){
+    public <T> T getCacheValue(String key,Class<T> clazz){
         String valueWithTime = mSharedPreferences.getString(key,null);
         if (valueWithTime == null) {
             return null;

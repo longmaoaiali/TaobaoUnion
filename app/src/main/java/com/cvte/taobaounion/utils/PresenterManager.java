@@ -5,6 +5,7 @@ import com.cvte.taobaounion.presenter.ISelectedPagePresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.presenter.impl.HomePresenterImpl;
 import com.cvte.taobaounion.presenter.impl.IOnSellPagePresenterImpl;
+import com.cvte.taobaounion.presenter.impl.SearchPresenterImpl;
 import com.cvte.taobaounion.presenter.impl.SelectedPagerPresenterImpl;
 import com.cvte.taobaounion.presenter.impl.TicketPresenterImpl;
 
@@ -17,6 +18,7 @@ public class PresenterManager {
     private static final PresenterManager instance = new PresenterManager();
     private final ISelectedPagePresenter mSelectedPagePresenter;
     private final IOnSellPagePresenter mOnSellPagePresenter;
+    private final SearchPresenterImpl mSearchPresenter;
 
     public HomePresenterImpl getHomePresenter() {
         return mHomePresenter;
@@ -47,11 +49,16 @@ public class PresenterManager {
         return mOnSellPagePresenter;
     }
 
+    public SearchPresenterImpl getSearchPresenter() {
+        return mSearchPresenter;
+    }
+
     private PresenterManager(){
         mHomePresenter = new HomePresenterImpl();
         mCategoryPagerPresenter = new CategoryPagerPresenterImpl();
         mTicketPresenter = new TicketPresenterImpl();
         mSelectedPagePresenter = new SelectedPagerPresenterImpl();
         mOnSellPagePresenter = new IOnSellPagePresenterImpl();
+        mSearchPresenter = new SearchPresenterImpl();
     }
 }

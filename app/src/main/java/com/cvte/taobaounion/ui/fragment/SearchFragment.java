@@ -27,7 +27,16 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     private static final String TAG = "SearchFragment";
 
     @BindView(R.id.search_history_view)
-    public TextFlowLayout mTextFlowLayout;
+    public TextFlowLayout mTextFlowLayoutHistory;
+
+    @BindView(R.id.search_recommend_view)
+    public TextFlowLayout mTextFlowLayoutRecommend;
+
+    @BindView(R.id.search_recommend_container)
+    public View mRecommendContainer;
+
+    @BindView(R.id.search_history_container)
+    public View mHistoryContainer;
 
     @Override
     protected int getRootVireResId() {
@@ -75,6 +84,12 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @Override
     public void onHistoriesLoaded(List<String> histories) {
         LogUtils.d(TAG,"onHistoriesLoaded-->"+histories.get(0));
+        if (histories == null || histories.size() == 0) {
+            mHistoryContainer.setVisibility(View.GONE);
+        } else {
+            mHistoryContainer.setVisibility(View.VISIBLE);
+            mTextFlowLayoutHistory.setTextList(histories);
+        }
     }
 
     @Override
@@ -111,6 +126,12 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
             recommendList.add(recommendWoed.getKeyword());
         }
 
-        mTextFlowLayout.setTextList(recommendList);
+        if (recommendList==null || recommendList.size()==0) {
+            mRecommendContainer.setVisibility(View.GONE);
+        } else {
+            mRecommendContainer.setVisibility(View.VISIBLE);
+            mTextFlowLayoutRecommend.setTextList(recommendList);
+        }
+
     }
 }

@@ -7,11 +7,15 @@ import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.SearchRecommand;
 import com.cvte.taobaounion.model.domain.SearchResult;
 import com.cvte.taobaounion.presenter.ISearchPresenter;
+import com.cvte.taobaounion.ui.custom.TextFlowLayout;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.PresenterManager;
 import com.cvte.taobaounion.view.ISearchViewCallback;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by user on 2020/10/21.
@@ -21,6 +25,9 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     private ISearchPresenter mSearchPresenter;
     private static final String TAG = "SearchFragment";
+
+    @BindView(R.id.search_history_view)
+    public TextFlowLayout mTextFlowLayout;
 
     @Override
     protected int getRootVireResId() {
@@ -99,5 +106,11 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     public void onRecommendWordsLoaded(List<SearchRecommand.DataBean> recommendWoeds) {
         //推荐词回调
         LogUtils.d(TAG,"size--> "+recommendWoeds.size());
+        List<String> recommendList = new ArrayList<>();
+        for (SearchRecommand.DataBean recommendWoed : recommendWoeds) {
+            recommendList.add(recommendWoed.getKeyword());
+        }
+
+        mTextFlowLayout.setTextList(recommendList);
     }
 }

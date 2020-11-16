@@ -53,6 +53,7 @@
                 android:textSize="14sp"/>
 
             <ImageView
+            android:id="@+id/search_history_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/delete_icon"
@@ -94,5 +95,10 @@
             android:id="@+id/search_recommend_view"/>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_result_list"/>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.cvte.taobaounion.view;
 
 import com.cvte.taobaounion.base.IBaseCallback;
+import com.cvte.taobaounion.model.domain.Histories;
 import com.cvte.taobaounion.model.domain.SearchRecommand;
 import com.cvte.taobaounion.model.domain.SearchResult;
 
@@ -16,7 +17,7 @@ public interface ISearchViewCallback extends IBaseCallback {
      * 得到搜索历史
      * @param histories
      */
-    void onHistoriesLoaded(List<String> histories);
+    void onHistoriesLoaded(Histories histories);
 
     /**
      * 删除搜索历史

@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
+import com.cvte.taobaounion.model.domain.Histories;
 import com.cvte.taobaounion.model.domain.SearchRecommand;
 import com.cvte.taobaounion.model.domain.SearchResult;
 import com.cvte.taobaounion.presenter.ISearchPresenter;
@@ -15,6 +16,7 @@ import com.cvte.taobaounion.view.ISearchViewCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -38,6 +40,13 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @BindView(R.id.search_history_container)
     public View mHistoryContainer;
 
+    @BindView(R.id.search_history_delete)
+    public View mHistoryDelete;
+
+    @BindView(R.id.search_result_list)
+    public RecyclerView resultListView;
+
+
     @Override
     protected int getRootVireResId() {
         return R.layout.fragment_search;
@@ -51,6 +60,19 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchPresenter.getRecommendWords();
         mSearchPresenter.doSearch("毛衣");
         mSearchPresenter.getHistories();
+    }
+
+    @Override
+    protected void initViewListener() {
+        super.initViewListener();
+        mHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSearchPresenter != null) {
+                    mSearchPresenter.delHistories();
+                }
+            }
+        });
     }
 
     @Override
@@ -82,19 +104,22 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     }
 
     @Override
-    public void onHistoriesLoaded(List<String> histories) {
-        LogUtils.d(TAG,"onHistoriesLoaded-->"+histories.get(0));
-        if (histories == null || histories.size() == 0) {
+    public void onHistoriesLoaded(Histories histories) {
+        //LogUtils.d(TAG,"onHistoriesLoaded-->"+histories.getHistories().get(0));
+        if (histories == null || histories.getHistories().size() == 0) {
             mHistoryContainer.setVisibility(View.GONE);
         } else {
             mHistoryContainer.setVisibility(View.VISIBLE);
-            mTextFlowLayoutHistory.setTextList(histories);
+            mTextFlowLayoutHistory.setTextList(histories.getHistories());
         }
     }
 
     @Override
     public void onHistoriesDeleted() {
-
+        if (mSearchPresenter != null) {
+            //更新UI显示
+            mSearchPresenter.getHistories();
+        }
     }
 
     @Override

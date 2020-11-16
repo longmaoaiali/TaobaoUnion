@@ -22,6 +22,10 @@
             android:text="取消"/>
 
         <EditText
+            android:id="@+id/search_input_box"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:singleLine="true"
             android:hint="搜你想搜的宝贝"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -32,6 +36,16 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/shape_edit_box_bg"
             android:textSize="14sp"/>
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/search_clean_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/search_btn"
+            android:src="@mipmap/remove"/>
 
     </RelativeLayout>
 

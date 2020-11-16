@@ -3,7 +3,12 @@ package com.cvte.taobaounion.ui.fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
@@ -54,6 +59,18 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @BindView(R.id.search_result_list)
     public RecyclerView mResultListView;
 
+    @BindView(R.id.search_btn)
+    public TextView mSearchBtn;
+
+    @BindView(R.id.search_clean_btn)
+    public ImageView mCleanInputBtn;
+
+    @BindView(R.id.search_input_box)
+    public EditText mSearchInputBox;
+
+
+
+
     private SearchAdapter mSearchAdapter;
 
 
@@ -75,6 +92,23 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @Override
     protected void initViewListener() {
         super.initViewListener();
+
+        mSearchInputBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                LogUtils.d(TAG,"onEditorAction-->");
+                if (actionId == EditorInfo.IME_ACTION_SEARCH && mSearchPresenter != null) {
+                    String keyword = v.getText().toString().trim();
+                    LogUtils.d(TAG,"onEditorAction-->keyword"+keyword);
+                    if (TextUtils.isEmpty(keyword)) {
+                        return  false;
+                    }
+                    LogUtils.d(TAG,"onEditorAction-->doSearch(keyword) " + keyword);
+                    mSearchPresenter.doSearch(keyword);
+                }
+                return false;
+            }
+        });
 
         mSearchAdapter.setOnListItemClickListener(new SearchAdapter.OnListItemClickListener() {
             @Override

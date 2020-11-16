@@ -16,6 +16,6 @@
   2020:11:10 实现特惠界面的数据请求与显示  
   2020:11:11 实现搜索界面的接口 实现层与view callback  
   2020:11:12 搜索界面调用presenter测试并调试解BUG; 自定义的TextFlowLayout控件显示推荐的搜索热词  
-  
+  2020:11:16 添加删除搜索历史click事件；searchResult recycler 显示; EditTexts搜素关键词  
   
   

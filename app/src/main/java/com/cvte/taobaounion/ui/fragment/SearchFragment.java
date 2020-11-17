@@ -95,6 +95,29 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @Override
     protected void initViewListener() {
         super.initViewListener();
+        //历史与推荐搜索热词的点击事件
+        mTextFlowLayoutHistory.setOnFlowTextItemClickListener(new TextFlowLayout.OnFlowTextItemClickListener() {
+            @Override
+            public void onFlowItemClick(String text) {
+                if (mSearchPresenter != null) {
+                    mResultListView.scrollToPosition(0);
+                    mSearchInputBox.setText(text);
+                    mSearchPresenter.doSearch(text);
+                }
+            }
+        });
+
+        mTextFlowLayoutRecommend.setOnFlowTextItemClickListener(new TextFlowLayout.OnFlowTextItemClickListener() {
+            @Override
+            public void onFlowItemClick(String text) {
+                if (mSearchPresenter != null) {
+                    mResultListView.scrollToPosition(0);
+                    mSearchInputBox.setText(text);
+                    mSearchPresenter.doSearch(text);
+                }
+            }
+        });
+
         //发起搜索
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +128,8 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
                         mSearchPresenter.doSearch(mSearchInputBox.getText().toString().trim());
                         KeyboardUtil.hide(getContext(),v);
                     }
-
+                } else {
+                    KeyboardUtil.hide(getContext(),v);
                 }
             }
         });
@@ -187,6 +211,10 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     }
 
     private void switch2HistoryPage() {
+        if (mSearchPresenter != null) {
+            mSearchPresenter.getHistories();
+        }
+
         if (mTextFlowLayoutHistory.getContentSize() != 0) {
             mHistoryContainer.setVisibility(View.VISIBLE);
         } else {
@@ -208,6 +236,14 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mResultListView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchAdapter = new SearchAdapter();
         mResultListView.setAdapter(mSearchAdapter);
+        mResultListView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.top = SizeUtils.dip2px(getContext(),1.5f);
+                outRect.bottom = SizeUtils.dip2px(getContext(),1.5f);
+            }
+        });
+
     }
 
     @Override
@@ -262,15 +298,6 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mResultListView.setVisibility(View.VISIBLE);
 
         mSearchAdapter.setData(result);
-        mResultListView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                outRect.top = SizeUtils.dip2px(getContext(),1.5f);
-                outRect.bottom = SizeUtils.dip2px(getContext(),1.5f);
-
-
-            }
-        });
 
     }
 

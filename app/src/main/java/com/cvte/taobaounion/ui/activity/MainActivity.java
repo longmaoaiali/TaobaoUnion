@@ -117,4 +117,10 @@ public class MainActivity extends BaseActivity {
         mNavigationView = this.findViewById(R.id.main_navigation_bar);
 
     }
+
+    public void switch2SearchPage() {
+        switchFragment(mSearchFragment);
+        //切换底部的tab导航栏
+        mNavigationView.setSelectedItemId(R.id.search);
+    }
 }

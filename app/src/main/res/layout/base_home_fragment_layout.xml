@@ -30,6 +30,7 @@
             android:layout_marginRight="10dp"/>
 
         <EditText
+            android:id="@+id/home_search_input_box"
             android:hint="搜你想搜的宝贝"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

@@ -9,11 +9,13 @@ import com.cvte.taobaounion.R;
 import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.presenter.impl.HomePresenterImpl;
+import com.cvte.taobaounion.ui.activity.MainActivity;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.view.IHomeCallback;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
@@ -29,6 +31,10 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     public TabLayout mTabLayout;
     @BindView(R.id.home_pager)
     public ViewPager mHomePager;
+    @BindView(R.id.home_search_input_box)
+    public View mHomePagerInputBox;
+
+
     private HomePagerAdapter mHomePagerAdapter;
 
 
@@ -65,6 +71,16 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected void initPresenter() {
         mHomePresenter = new HomePresenterImpl();
         mHomePresenter.registerViewCallback(this);
+        mHomePagerInputBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo:跳转到搜索页面
+                FragmentActivity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    ((MainActivity) activity).switch2SearchPage();
+                }
+            }
+        });
     }
 
     @Override

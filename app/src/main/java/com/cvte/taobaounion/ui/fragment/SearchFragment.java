@@ -2,7 +2,9 @@ package com.cvte.taobaounion.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,6 +22,7 @@ import com.cvte.taobaounion.presenter.impl.TicketPresenterImpl;
 import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.SearchAdapter;
 import com.cvte.taobaounion.ui.custom.TextFlowLayout;
+import com.cvte.taobaounion.utils.KeyboardUtil;
 import com.cvte.taobaounion.utils.LogUtils;
 import com.cvte.taobaounion.utils.PresenterManager;
 import com.cvte.taobaounion.utils.SizeUtils;
@@ -85,14 +88,61 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchPresenter.registerViewCallback(this);
         /*获取搜索推荐词*/
         mSearchPresenter.getRecommendWords();
-        mSearchPresenter.doSearch("毛衣");
+        //mSearchPresenter.doSearch("毛衣");
         mSearchPresenter.getHistories();
     }
 
     @Override
     protected void initViewListener() {
         super.initViewListener();
+        //发起搜索
+        mSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSearchInputBox.getText().toString().trim().length()>0) {
+                    //非空格的输入就进行搜索
+                    if (mSearchPresenter != null) {
+                        mSearchPresenter.doSearch(mSearchInputBox.getText().toString().trim());
+                        KeyboardUtil.hide(getContext(),v);
+                    }
 
+                }
+            }
+        });
+
+        //输入框清除按钮
+        mCleanInputBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchInputBox.setText("");
+                //显示历史记录界面
+                switch2HistoryPage();
+            }
+        });
+
+        //输入框内容变化
+        mSearchInputBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //有输入就显示 包括空格
+                mCleanInputBtn.setVisibility(s.toString().length() > 0 ? View.VISIBLE:View.GONE);
+                //输入的是字符
+                mSearchBtn.setText(s.toString().trim().length()>0?"搜索":"取消");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        //输入框发起搜索
         mSearchInputBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -134,6 +184,22 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
                 }
             }
         });
+    }
+
+    private void switch2HistoryPage() {
+        if (mTextFlowLayoutHistory.getContentSize() != 0) {
+            mHistoryContainer.setVisibility(View.VISIBLE);
+        } else {
+            mHistoryContainer.setVisibility(View.GONE);
+        }
+
+        if (mTextFlowLayoutRecommend.getContentSize() != 0) {
+            mRecommendContainer.setVisibility(View.VISIBLE);
+        } else {
+            mRecommendContainer.setVisibility(View.GONE);
+        }
+
+        mResultListView.setVisibility(View.GONE);
     }
 
     @Override

@@ -34,6 +34,10 @@ public class TextFlowLayout extends ViewGroup {
 
     }
 
+    public int getContentSize(){
+        return mTextList.size();
+    }
+
     public void setItemHoriaontalSpace(float itemHoriaontalSpace) {
         mItemHorizonticalSpace = itemHoriaontalSpace;
     }

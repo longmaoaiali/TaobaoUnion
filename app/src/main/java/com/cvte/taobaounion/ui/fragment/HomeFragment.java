@@ -1,5 +1,6 @@
 package com.cvte.taobaounion.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.cvte.taobaounion.base.BaseFragment;
 import com.cvte.taobaounion.model.domain.Categories;
 import com.cvte.taobaounion.presenter.impl.HomePresenterImpl;
 import com.cvte.taobaounion.ui.activity.MainActivity;
+import com.cvte.taobaounion.ui.activity.ScanQrCodeActivity;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.view.IHomeCallback;
 import com.google.android.material.tabs.TabLayout;
@@ -33,6 +35,9 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     public ViewPager mHomePager;
     @BindView(R.id.home_search_input_box)
     public View mHomePagerInputBox;
+
+    @BindView(R.id.scan_icon)
+    public View mScanBtn;
 
 
     private HomePagerAdapter mHomePagerAdapter;
@@ -79,6 +84,14 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
                 if (activity instanceof MainActivity) {
                     ((MainActivity) activity).switch2SearchPage();
                 }
+            }
+        });
+
+        mScanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo；跳转扫码点击事件
+                startActivity(new Intent(getContext(),ScanQrCodeActivity.class));
             }
         });
     }

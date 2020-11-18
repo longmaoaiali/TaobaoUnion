@@ -17,6 +17,7 @@ import com.cvte.taobaounion.model.domain.HomePagerContent;
 import com.cvte.taobaounion.presenter.ICategoryPagerPresenter;
 import com.cvte.taobaounion.presenter.impl.CategoryPagerPresenterImpl;
 import com.cvte.taobaounion.presenter.impl.TicketPresenterImpl;
+import com.cvte.taobaounion.ui.activity.ScanQrCodeActivity;
 import com.cvte.taobaounion.ui.activity.TicketActivity;
 import com.cvte.taobaounion.ui.adapter.HomePagerAdapter;
 import com.cvte.taobaounion.ui.adapter.HomepageContentAdapter;
@@ -47,6 +48,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
 
+
+
     @BindView(R.id.home_pager_content_list)
     public RecyclerView mContentList;
 
@@ -67,6 +70,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
 
     @BindView(R.id.home_pager_header_container)
     public LinearLayout homePagerHeaderContainer;
+
+
     private TicketPresenterImpl mTicketPresenter;
 
 
@@ -123,6 +128,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryCallback
         //recyclerView item点击事件 轮播图点击事件
         mHomepageContentAdapter.setOnListItemClickListener(this);
         mLooperPagerAdapter.setOnLooperPageClickListener(this);
+
 
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

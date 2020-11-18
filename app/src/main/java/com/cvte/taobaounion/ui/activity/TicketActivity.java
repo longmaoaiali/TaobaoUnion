@@ -173,6 +173,11 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
             Glide.with(this).load(coverPath).into(mTicketCover);
         }
 
+        //处理结果没有图片的case
+        if (TextUtils.isEmpty(cover)) {
+            mTicketCover.setImageResource(R.mipmap.no_image);
+        }
+
         if(result.getData().getTbk_tpwd_create_response()!=null){
             mTicketCode.setText(result.getData().getTbk_tpwd_create_response().getData().getModel());
         }

@@ -38,7 +38,7 @@
             android:id="@+id/ticket_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorGrey"/>
+            android:src="@mipmap/no_image"/>
 
         <com.cvte.taobaounion.ui.custom.LoadingView
             android:id="@+id/ticket_cover_loading"

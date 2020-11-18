@@ -18,5 +18,5 @@
   2020:11:12 搜索界面调用presenter测试并调试解BUG; 自定义的TextFlowLayout控件显示推荐的搜索热词  
   2020:11:16 添加删除搜索历史click事件；searchResult recycler 显示; EditTexts搜素关键词  
   2020:11:17 添加EditText点击事件并发起搜索; 实现Fragment跳转和APP主题变灰(UI颜色矩阵饱和度变为0)  
-  
+  2020:11:18 引入开源工具库 RxTools，实现淘宝扫描二维码，扫描完成后跳转到领券界面  
   
